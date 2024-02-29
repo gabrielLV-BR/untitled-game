@@ -1,0 +1,54 @@
+[gd_scene load_steps=9 format=3 uid="uid://2obxrl2xy5ce"]
+
+[ext_resource type="Script" path="res://entities/player/player.gd" id="1_mk4dj"]
+[ext_resource type="PackedScene" uid="uid://r2hqlyrk2b63" path="res://entities/player/player.glb" id="1_x7f56"]
+[ext_resource type="Environment" uid="uid://1nfp17qk7mak" path="res://resources/camera_environment.tres" id="2_g65td"]
+[ext_resource type="Script" path="res://entities/player/look.gd" id="3_2aeb4"]
+[ext_resource type="Script" path="res://entities/player/interactor.gd" id="5_1b7my"]
+[ext_resource type="Script" path="res://entities/player/interactor_look.gd" id="5_v4btj"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ymbgr"]
+height = 3.97289
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_48og5"]
+size = Vector3(0.573242, 0.408203, 4.49023)
+
+[node name="CharacterBody3D" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.45248, 0)
+script = ExtResource("1_mk4dj")
+
+[node name="Body" parent="." instance=ExtResource("1_x7f56")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, -0.351123, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.379173, 0.0649469)
+shape = SubResource("CapsuleShape3D_ymbgr")
+
+[node name="Head" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.40623, 0)
+script = ExtResource("3_2aeb4")
+
+[node name="Camera3D" type="Camera3D" parent="Head"]
+environment = ExtResource("2_g65td")
+
+[node name="Interactor" type="Area3D" parent="Head"]
+collision_layer = 0
+collision_mask = 512
+monitorable = false
+script = ExtResource("5_v4btj")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Head/Interactor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.22895)
+shape = SubResource("BoxShape3D_48og5")
+
+[node name="InteractLook" type="RayCast3D" parent="Head"]
+enabled = false
+target_position = Vector3(0, 0, -4.5)
+collision_mask = 1536
+collide_with_areas = true
+script = ExtResource("5_1b7my")
+
+[node name="States" type="Node" parent="."]
+
+[connection signal="area_entered" from="Head/Interactor" to="Head/Interactor" method="_on_area_look_at"]
+[connection signal="area_exited" from="Head/Interactor" to="Head/Interactor" method="_on_area_look_away"]
