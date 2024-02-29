@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://2obxrl2xy5ce"]
+[gd_scene load_steps=13 format=3 uid="uid://2obxrl2xy5ce"]
 
 [ext_resource type="Script" path="res://entities/player/player.gd" id="1_mk4dj"]
 [ext_resource type="PackedScene" uid="uid://r2hqlyrk2b63" path="res://entities/player/player.glb" id="1_x7f56"]
@@ -6,36 +6,36 @@
 [ext_resource type="Script" path="res://entities/player/look.gd" id="3_2aeb4"]
 [ext_resource type="Script" path="res://entities/player/interactor.gd" id="5_1b7my"]
 [ext_resource type="Script" path="res://entities/player/interactor_look.gd" id="5_v4btj"]
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ymbgr"]
-height = 3.97289
+[ext_resource type="Texture2D" uid="uid://bjrmcjdxrtrir" path="res://resources/cursor/cursor2.png" id="6_pkfmb"]
+[ext_resource type="Texture2D" uid="uid://f6dlsisp2bqo" path="res://resources/cursor/cursor1.png" id="7_dslps"]
+[ext_resource type="Texture2D" uid="uid://c8vwi2wq70cb8" path="res://resources/cursor/cursor3.png" id="7_i2fwq"]
+[ext_resource type="Texture2D" uid="uid://cgll3aha1m6v2" path="res://resources/cursor/cursor4.png" id="8_4xgql"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_48og5"]
 size = Vector3(0.573242, 0.408203, 4.49023)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ymbgr"]
+radius = 0.584539
+height = 3.97289
 
 [node name="CharacterBody3D" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.45248, 0)
 script = ExtResource("1_mk4dj")
 
-[node name="Body" parent="." instance=ExtResource("1_x7f56")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, -0.351123, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.379173, 0.0649469)
-shape = SubResource("CapsuleShape3D_ymbgr")
-
 [node name="Head" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.40623, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.40623, 0.09374)
 script = ExtResource("3_2aeb4")
 
 [node name="Camera3D" type="Camera3D" parent="Head"]
 environment = ExtResource("2_g65td")
 
-[node name="Interactor" type="Area3D" parent="Head"]
+[node name="Interactor" type="Area3D" parent="Head" node_paths=PackedStringArray("cursor_sprite")]
 collision_layer = 0
 collision_mask = 512
 monitorable = false
 script = ExtResource("5_v4btj")
+cursor_sprite = NodePath("../../Control/CenterContainer/Sprite2D")
+cursor_textures = Array[Texture2D]([ExtResource("7_dslps"), ExtResource("6_pkfmb"), ExtResource("7_i2fwq"), ExtResource("8_4xgql")])
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Head/Interactor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.22895)
@@ -48,7 +48,39 @@ collision_mask = 1536
 collide_with_areas = true
 script = ExtResource("5_1b7my")
 
-[node name="States" type="Node" parent="."]
+[node name="Body" parent="." instance=ExtResource("1_x7f56")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, -0.351123, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.392203, 0.0466979)
+shape = SubResource("CapsuleShape3D_ymbgr")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="Control/CenterContainer"]
+texture = ExtResource("7_dslps")
+centered = false
 
 [connection signal="area_entered" from="Head/Interactor" to="Head/Interactor" method="_on_area_look_at"]
 [connection signal="area_exited" from="Head/Interactor" to="Head/Interactor" method="_on_area_look_away"]

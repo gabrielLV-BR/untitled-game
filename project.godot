@@ -15,6 +15,10 @@ run/main_scene="res://levels/level1.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+InteractionType="*res://resources/globals/interaction_type.gd"
+
 [display]
 
 window/size/viewport_width=640

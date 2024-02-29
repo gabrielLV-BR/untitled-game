@@ -4,7 +4,7 @@ const MOUSE_ACCELERATION : float = 2e-1
 const MAX_CAMERA_PITCH : float = 80
 const MIN_CAMERA_PITCH : float = -80
 
-@onready var body : CharacterBody3D = get_parent()
+@onready var root : CharacterBody3D = get_parent()
 
 var mouse_movement := Vector2.ZERO
 
@@ -15,7 +15,7 @@ func _process(delta):
 	yaw += mouse_movement.x * delta
 	pitch += mouse_movement.y * delta
 	
-	body.global_rotation = Vector3(0, yaw, 0)
+	root.global_rotation = Vector3(0, yaw, 0)
 	rotation = Vector3(
 		clamp(pitch, MIN_CAMERA_PITCH, MAX_CAMERA_PITCH), 
 		0, 
