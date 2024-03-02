@@ -1,6 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://7f1h3o5xftl4"]
+[gd_scene load_steps=5 format=3 uid="uid://7f1h3o5xftl4"]
 
 [ext_resource type="Script" path="res://entities/test_interactable/test_interaction.gd" id="1_6xwf0"]
+[ext_resource type="Script" path="res://resources/dialogue.gd" id="2_yb20l"]
+
+[sub_resource type="Resource" id="Resource_f0o6v"]
+script = ExtResource("2_yb20l")
+lines = Array[String](["Batalha de youtubers", "KKKKKKKKKK"])
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6vjb4"]
 
@@ -11,6 +16,7 @@ collision_layer = 1536
 collision_mask = 0
 monitoring = false
 script = ExtResource("1_6xwf0")
+dialogue = SubResource("Resource_f0o6v")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource("BoxShape3D_6vjb4")

@@ -5,6 +5,11 @@ const JUMP_VELOCITY = 4.5
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
+@onready var arm_animator : AnimationPlayer = $Head/Arm/AnimationPlayer
+@onready var animator : AnimationPlayer = $AnimationPlayer
+
+var is_lighter_on := false
+
 func _physics_process(delta):
 	# Add the gravity.
 	if not is_on_floor():
@@ -26,3 +31,15 @@ func _physics_process(delta):
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 
 	move_and_slide()
+	
+# todo make this use actions
+func _unhandled_input(_event):
+	if Input.is_action_just_pressed("pl_use"):
+		is_lighter_on = !is_lighter_on
+		if is_lighter_on:
+			# open
+			arm_animator.play("LighterOn")
+			animator.play("LightOn")
+		else:
+			arm_animator.play("LighterOn", -1, -1)
+			animator.play("RESET")			

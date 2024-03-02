@@ -1,0 +1,6 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://dfj7bn42kiev3"]
+
+[ext_resource type="FontFile" uid="uid://c25l0de1tfo8s" path="res://resources/fonts/Butler_Bold.otf" id="1_sprb5"]
+
+[resource]
+default_font = ExtResource("1_sprb5")
