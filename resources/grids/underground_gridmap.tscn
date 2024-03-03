@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://dbuekl5l2iso8"]
+
+[ext_resource type="PackedScene" uid="uid://b31uggqcxniso" path="res://resources/models/underground_gridmap.blend" id="1_vnlbn"]
+
+[node name="underground_gridmap" instance=ExtResource("1_vnlbn")]

@@ -1,24 +1,27 @@
-[gd_scene load_steps=18 format=3 uid="uid://2obxrl2xy5ce"]
+[gd_scene load_steps=21 format=3 uid="uid://2obxrl2xy5ce"]
 
-[ext_resource type="Script" path="res://entities/player/player.gd" id="1_mk4dj"]
+[ext_resource type="Script" path="res://resources/managers/state_manager.gd" id="1_kcmwg"]
+[ext_resource type="Script" path="res://entities/player/scripts/player.gd" id="1_s3mkj"]
 [ext_resource type="Environment" uid="uid://1nfp17qk7mak" path="res://resources/camera_environment.tres" id="2_g65td"]
-[ext_resource type="Script" path="res://entities/player/look.gd" id="3_2aeb4"]
-[ext_resource type="Script" path="res://entities/player/camera_bob.gd" id="4_whcuf"]
-[ext_resource type="Script" path="res://entities/player/interactor.gd" id="5_1b7my"]
-[ext_resource type="Script" path="res://entities/player/interactor_look.gd" id="5_v4btj"]
+[ext_resource type="Script" path="res://entities/player/scripts/look.gd" id="2_vy184"]
+[ext_resource type="Script" path="res://entities/player/scripts/camera_bob.gd" id="4_5ug78"]
+[ext_resource type="Resource" uid="uid://d31w8ridf8en5" path="res://entities/player/player_stats.tres" id="5_i8aky"]
+[ext_resource type="Script" path="res://entities/player/scripts/interactor_look.gd" id="5_vul4v"]
 [ext_resource type="Texture2D" uid="uid://bjrmcjdxrtrir" path="res://resources/cursor/cursor2.png" id="6_pkfmb"]
 [ext_resource type="Texture2D" uid="uid://f6dlsisp2bqo" path="res://resources/cursor/cursor1.png" id="7_dslps"]
 [ext_resource type="Texture2D" uid="uid://c8vwi2wq70cb8" path="res://resources/cursor/cursor3.png" id="7_i2fwq"]
 [ext_resource type="Texture2D" uid="uid://cgll3aha1m6v2" path="res://resources/cursor/cursor4.png" id="8_4xgql"]
-[ext_resource type="PackedScene" uid="uid://dvsoqh2q46sym" path="res://entities/player/model/arm.blend" id="10_0sda2"]
+[ext_resource type="Script" path="res://entities/player/scripts/interactor.gd" id="10_04la8"]
 [ext_resource type="PackedScene" uid="uid://r2hqlyrk2b63" path="res://entities/player/model/player.glb" id="10_v2paq"]
+[ext_resource type="PackedScene" uid="uid://d2a8lg8qip5s3" path="res://entities/player/arm.tscn" id="11_7epgs"]
+[ext_resource type="Script" path="res://entities/player/scripts/move_state.gd" id="14_8qsc7"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_48og5"]
 size = Vector3(0.573242, 0.408203, 4.49023)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ymbgr"]
-radius = 0.584539
-height = 3.97289
+radius = 0.4
+height = 2.38522
 
 [sub_resource type="Animation" id="Animation_mn5hq"]
 resource_name = "LightOn"
@@ -26,10 +29,10 @@ tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/path = NodePath("Head/Arm/OmniLight3D:light_energy")
-tracks/0/interp = 1
+tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.6, 0.7),
+"times": PackedFloat32Array(0, 0.35, 0.7),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [0.0, 0.0, 10.0]
@@ -58,21 +61,22 @@ _data = {
 
 [node name="CharacterBody3D" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.45248, 0)
-script = ExtResource("1_mk4dj")
+script = ExtResource("1_s3mkj")
 
 [node name="Head" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.40623, 0.09374)
-script = ExtResource("3_2aeb4")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.379437, 0.09374)
+script = ExtResource("2_vy184")
 
 [node name="Camera3D" type="Camera3D" parent="Head"]
 environment = ExtResource("2_g65td")
-script = ExtResource("4_whcuf")
+script = ExtResource("4_5ug78")
+player_stats = ExtResource("5_i8aky")
 
 [node name="Interactor" type="Area3D" parent="Head" node_paths=PackedStringArray("cursor_sprite")]
 collision_layer = 0
 collision_mask = 512
 monitorable = false
-script = ExtResource("5_v4btj")
+script = ExtResource("5_vul4v")
 cursor_sprite = NodePath("../../Control/CenterContainer/Sprite2D")
 cursor_textures = Array[Texture2D]([ExtResource("7_dslps"), ExtResource("6_pkfmb"), ExtResource("7_i2fwq"), ExtResource("8_4xgql")])
 
@@ -85,13 +89,13 @@ enabled = false
 target_position = Vector3(0, 0, -4.5)
 collision_mask = 1536
 collide_with_areas = true
-script = ExtResource("5_1b7my")
+script = ExtResource("10_04la8")
 
-[node name="Arm" parent="Head" instance=ExtResource("10_0sda2")]
+[node name="Arm" parent="Head" instance=ExtResource("11_7epgs")]
 transform = Transform3D(-0.0187977, 0, -0.207394, 0, 0.208245, 0, 0.207394, 0, -0.0187977, -0.589684, -0.382106, -0.068435)
 
 [node name="OmniLight3D" type="OmniLight3D" parent="Head/Arm"]
-transform = Transform3D(4.80206, 0, -3.27826e-07, 0, 4.80204, 0, 2.98023e-07, 0, 4.80206, -4.20792, 0.921366, -0.310857)
+transform = Transform3D(4.80206, 0, 8.9407e-08, 0, 4.80204, 0, -8.9407e-08, 0, 4.80206, -4.22708, 1.00584, -0.522292)
 light_color = Color(0.815686, 0.427451, 0.0784314, 1)
 light_energy = 0.0
 light_size = 0.1
@@ -100,10 +104,10 @@ distance_fade_enabled = true
 omni_range = 15.0
 
 [node name="Body" parent="." instance=ExtResource("10_v2paq")]
-transform = Transform3D(-1, 0, -8.74228e-08, -1.74099e-08, 0.97997, 0.199146, 8.56717e-08, 0.199146, -0.97997, 0, -0.351123, 0.249417)
+transform = Transform3D(-0.6, 7.38268e-09, -8.87828e-08, -1.04459e-08, 0.587982, 0.119488, 8.84747e-08, 0.119488, -0.587982, 0, -0.351123, 0.249417)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.392203, 0.0466979)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.360212, 0.0466979)
 shape = SubResource("CapsuleShape3D_ymbgr")
 
 [node name="Control" type="Control" parent="."]
@@ -138,5 +142,17 @@ libraries = {
 "": SubResource("AnimationLibrary_pdjnt")
 }
 
+[node name="States" type="Node" parent="."]
+script = ExtResource("1_kcmwg")
+
+[node name="DefaultState" type="Node" parent="States" node_paths=PackedStringArray("body", "arm_animator", "animator")]
+script = ExtResource("14_8qsc7")
+body = NodePath("../..")
+arm_animator = NodePath("../../Head/Arm/AnimationPlayer")
+animator = NodePath("../../AnimationPlayer")
+player_stats = ExtResource("5_i8aky")
+
 [connection signal="area_entered" from="Head/Interactor" to="Head/Interactor" method="_on_area_look_at"]
 [connection signal="area_exited" from="Head/Interactor" to="Head/Interactor" method="_on_area_look_away"]
+
+[editable path="Head/Arm"]

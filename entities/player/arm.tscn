@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://d2a8lg8qip5s3"]
+
+[ext_resource type="PackedScene" uid="uid://dvsoqh2q46sym" path="res://entities/player/model/arm.blend" id="1_mim1f"]
+
+[node name="arm" instance=ExtResource("1_mim1f")]
